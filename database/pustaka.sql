@@ -1,13 +1,15 @@
 -- phpMyAdmin SQL Dump
--- version 4.6.5.2
+-- version 4.9.1
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: Apr 30, 2024 at 10:20 AM
--- Server version: 10.1.21-MariaDB
--- PHP Version: 5.6.30
+-- Waktu pembuatan: 27 Bulan Mei 2024 pada 04.47
+-- Versi server: 10.4.8-MariaDB
+-- Versi PHP: 7.1.33
 
 SET SQL_MODE = "NO_AUTO_VALUE_ON_ZERO";
+SET AUTOCOMMIT = 0;
+START TRANSACTION;
 SET time_zone = "+00:00";
 
 
@@ -23,7 +25,7 @@ SET time_zone = "+00:00";
 -- --------------------------------------------------------
 
 --
--- Table structure for table `booking`
+-- Struktur dari tabel `booking`
 --
 
 CREATE TABLE `booking` (
@@ -36,7 +38,7 @@ CREATE TABLE `booking` (
 -- --------------------------------------------------------
 
 --
--- Table structure for table `booking_detail`
+-- Struktur dari tabel `booking_detail`
 --
 
 CREATE TABLE `booking_detail` (
@@ -48,7 +50,7 @@ CREATE TABLE `booking_detail` (
 -- --------------------------------------------------------
 
 --
--- Table structure for table `buku`
+-- Struktur dari tabel `buku`
 --
 
 CREATE TABLE `buku` (
@@ -66,13 +68,13 @@ CREATE TABLE `buku` (
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
 --
--- Dumping data for table `buku`
+-- Dumping data untuk tabel `buku`
 --
 
 INSERT INTO `buku` (`id`, `judul_buku`, `id_kategori`, `pengarang`, `penerbit`, `tahun_terbit`, `isbn`, `stok`, `dipinjam`, `dibooking`, `image`) VALUES
-(1, 'Statistika dengan Program Komputer', 1, 'Ahmad Kholiqul Amin', 'Deep Publish', 2014, '9786022809432', 6, 1, 1, 'img1557402455.jpg'),
-(2, 'Mudah Belajar Komputer untuk Anak', 1, 'Bambang Agus Setiawan', 'Huta Media', 2014, '9786025118500', 5, 3, 1, 'img1557402397.jpg'),
-(5, 'PHP Komplet', 1, 'Jubilee', 'Elex Media Komputindo', 2017, '8346753547', 5, 1, 1, 'img1555522493.jpg'),
+(1, 'Statistika dengan Program Komputer', 1, 'Ahmad Kholiqul Amin', 'Deep Publish', 2014, '9786022809432', 17, -16, 7, 'img1557402455.jpg'),
+(2, 'Mudah Belajar Komputer untuk Anak', 1, 'Bambang Agus Setiawan', 'Huta Media', 2014, '9786025118500', 20, -14, 3, 'img1557402397.jpg'),
+(5, 'PHP Komplet', 1, 'Jubilee', 'Elex Media Komputindo', 2017, '8346753547', 22, -17, 2, 'img1555522493.jpg'),
 (10, 'Detektif Conan Ep 200', 9, 'Okigawa sasuke', 'Cultura', 2016, '874387583987', 5, 0, 0, 'img1557401465.jpg'),
 (14, 'Bahasa Indonesia', 2, 'Umri Nur\'aini dan Indriyani', 'Pusat Perbukuan', 2015, '757254724884', 3, 0, 0, 'img1557402703.jpg'),
 (15, 'Komunikasi Lintas Budaya', 5, 'Dr. Dedy Kurnia', 'Published', 2015, '878674646488', 5, 0, 0, 'img1557403156.jpg'),
@@ -86,7 +88,7 @@ INSERT INTO `buku` (`id`, `judul_buku`, `id_kategori`, `pengarang`, `penerbit`, 
 -- --------------------------------------------------------
 
 --
--- Table structure for table `detail_pinjam`
+-- Struktur dari tabel `detail_pinjam`
 --
 
 CREATE TABLE `detail_pinjam` (
@@ -95,10 +97,21 @@ CREATE TABLE `detail_pinjam` (
   `denda` int(11) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
+--
+-- Dumping data untuk tabel `detail_pinjam`
+--
+
+INSERT INTO `detail_pinjam` (`no_pinjam`, `id_buku`, `denda`) VALUES
+('07052024001', 1, 5000),
+('07052024001', 2, 5000),
+('07052024002', 2, 5000),
+('07052024002', 5, 5000),
+('21052024003', 1, 5000);
+
 -- --------------------------------------------------------
 
 --
--- Table structure for table `kategori`
+-- Struktur dari tabel `kategori`
 --
 
 CREATE TABLE `kategori` (
@@ -107,7 +120,7 @@ CREATE TABLE `kategori` (
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
 --
--- Dumping data for table `kategori`
+-- Dumping data untuk tabel `kategori`
 --
 
 INSERT INTO `kategori` (`id`, `kategori`) VALUES
@@ -124,7 +137,7 @@ INSERT INTO `kategori` (`id`, `kategori`) VALUES
 -- --------------------------------------------------------
 
 --
--- Table structure for table `menu`
+-- Struktur dari tabel `menu`
 --
 
 CREATE TABLE `menu` (
@@ -133,7 +146,7 @@ CREATE TABLE `menu` (
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
 --
--- Dumping data for table `menu`
+-- Dumping data untuk tabel `menu`
 --
 
 INSERT INTO `menu` (`id`, `menu`) VALUES
@@ -148,7 +161,7 @@ INSERT INTO `menu` (`id`, `menu`) VALUES
 -- --------------------------------------------------------
 
 --
--- Table structure for table `pinjam`
+-- Struktur dari tabel `pinjam`
 --
 
 CREATE TABLE `pinjam` (
@@ -162,10 +175,19 @@ CREATE TABLE `pinjam` (
   `total_denda` int(11) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
+--
+-- Dumping data untuk tabel `pinjam`
+--
+
+INSERT INTO `pinjam` (`no_pinjam`, `tgl_pinjam`, `id_booking`, `id_user`, `tgl_kembali`, `tgl_pengembalian`, `status`, `total_denda`) VALUES
+('07052024001', '2024-05-07', '07052024001', 21, '0000-00-00', '2024-05-21', 'KEMBALI', 0),
+('07052024002', '2024-05-07', '07052024001', 21, '0000-00-00', '2024-05-07', 'KEMBALI', 0),
+('21052024003', '2024-05-21', '21052024001', 21, '0000-00-00', '2024-05-21', 'KEMBALI', 0);
+
 -- --------------------------------------------------------
 
 --
--- Table structure for table `role`
+-- Struktur dari tabel `role`
 --
 
 CREATE TABLE `role` (
@@ -174,7 +196,7 @@ CREATE TABLE `role` (
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
 --
--- Dumping data for table `role`
+-- Dumping data untuk tabel `role`
 --
 
 INSERT INTO `role` (`id`, `role`) VALUES
@@ -184,7 +206,7 @@ INSERT INTO `role` (`id`, `role`) VALUES
 -- --------------------------------------------------------
 
 --
--- Table structure for table `temp`
+-- Struktur dari tabel `temp`
 --
 
 CREATE TABLE `temp` (
@@ -200,17 +222,10 @@ CREATE TABLE `temp` (
   `tahun_terbit` year(4) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
---
--- Dumping data for table `temp`
---
-
-INSERT INTO `temp` (`id`, `tgl_booking`, `id_user`, `email_user`, `id_buku`, `judul_buku`, `image`, `penulis`, `penerbit`, `tahun_terbit`) VALUES
-(1, '2024-04-30 14:45:01', '20', 'refy@gmail.com', 1, 'Statistika dengan Program Komputer', 'img1557402455.jpg', 'Ahmad Kholiqul Amin', 'Deep Publish', 2014);
-
 -- --------------------------------------------------------
 
 --
--- Table structure for table `user`
+-- Struktur dari tabel `user`
 --
 
 CREATE TABLE `user` (
@@ -226,7 +241,7 @@ CREATE TABLE `user` (
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
 --
--- Dumping data for table `user`
+-- Dumping data untuk tabel `user`
 --
 
 INSERT INTO `user` (`id`, `nama`, `email`, `image`, `password`, `role_id`, `is_active`, `tanggal_input`, `alamat`) VALUES
@@ -236,102 +251,111 @@ INSERT INTO `user` (`id`, `nama`, `email`, `image`, `password`, `role_id`, `is_a
 (14, 'Eni Irfiani', 'eni.enf@bsi.ac.id', 'default.jpg', '$2y$10$pVXQd4Hs4yrtWjIjhyngge2tsG5nWbL.B956XbElPOM0Q0EsSip.a', 1, 1, 1563868032, ''),
 (15, 'Andriansah', 'andriansah.aiy@bsi.ac.id', 'default.jpg', '$2y$10$perspnO9EwfN24C1UnIlVuJl9WfZazMq.KynnKNcTdqprkVSfcmiC', 1, 1, 1563868080, ''),
 (16, 'Imam Khotib', 'imamkhotib0@gmail.com', 'default.jpg', '$2y$10$G6Z.Bq1htczywNfgmC0Ti.WTidif/a7ztpgMOyj1r7v6UWJzDSOmW', 1, 1, 1564436443, ''),
-(17, 'ryan', 'ryan@gmail.com', 'default.jpg', '$2y$10$KWwKbOJJiLZwt3hHUD/JF.jprXUlyOrkbbOhft2HBKijmiecypcIG', 2, 1, 1710303052, ''),
+(17, 'ryan', 'ryan@gmail.com', 'pro1715065382.jpg', '$2y$10$KWwKbOJJiLZwt3hHUD/JF.jprXUlyOrkbbOhft2HBKijmiecypcIG', 2, 1, 1710303052, ''),
 (18, 'Refy saputri', 'saputrirefy@gmail.com', 'pro1712047823.PNG', '$2y$10$4MYa3eoRGt8ye5jOnVU5derHL8BLvyBk7XnISv3Z640/vVr0de2RO', 2, 1, 1712046352, 'asdfghjk'),
 (19, 'Refy saputri', 'saputrirefy@gmail.com', 'pro1712047823.PNG', '$2y$10$Juiq0M6IGHoDqeNGxBhCd.7zeYZlHp7yaw7hvdpSOz1pYlfw//TIW', 2, 1, 1712046372, 'asdfg'),
-(20, 'refy fitriani', 'refy@gmail.com', 'pro1713863313.jpg', '$2y$10$4JyXw2XYCelb7iygHqgt2.Lx8qCbdyk6DwmDfVd//RGlg7a2bQ8xS', 2, 1, 1713613731, 'asdfghjk');
+(20, 'refy fitriani', 'refy@gmail.com', 'pro1713863313.jpg', '$2y$10$4JyXw2XYCelb7iygHqgt2.Lx8qCbdyk6DwmDfVd//RGlg7a2bQ8xS', 2, 1, 1713613731, 'asdfghjk'),
+(21, 'Admin', 'Admin@gmail.com', 'pro1715072345.jpg', '$2y$10$9ZFCa3CQca3gne1pT.oZpuddSGG1Aw4PwQKAg4i6q2kq0Bl6JBV0u', 1, 1, 1715067073, 'dasana indah');
 
 --
 -- Indexes for dumped tables
 --
 
 --
--- Indexes for table `booking`
+-- Indeks untuk tabel `booking`
 --
 ALTER TABLE `booking`
   ADD PRIMARY KEY (`id_booking`);
 
 --
--- Indexes for table `booking_detail`
+-- Indeks untuk tabel `booking_detail`
 --
 ALTER TABLE `booking_detail`
   ADD PRIMARY KEY (`id`);
 
 --
--- Indexes for table `buku`
+-- Indeks untuk tabel `buku`
 --
 ALTER TABLE `buku`
   ADD PRIMARY KEY (`id`);
 
 --
--- Indexes for table `kategori`
+-- Indeks untuk tabel `kategori`
 --
 ALTER TABLE `kategori`
   ADD PRIMARY KEY (`id`);
 
 --
--- Indexes for table `menu`
+-- Indeks untuk tabel `menu`
 --
 ALTER TABLE `menu`
   ADD PRIMARY KEY (`id`);
 
 --
--- Indexes for table `role`
+-- Indeks untuk tabel `role`
 --
 ALTER TABLE `role`
   ADD PRIMARY KEY (`id`);
 
 --
--- Indexes for table `temp`
+-- Indeks untuk tabel `temp`
 --
 ALTER TABLE `temp`
   ADD PRIMARY KEY (`id`);
 
 --
--- Indexes for table `user`
+-- Indeks untuk tabel `user`
 --
 ALTER TABLE `user`
   ADD PRIMARY KEY (`id`);
 
 --
--- AUTO_INCREMENT for dumped tables
+-- AUTO_INCREMENT untuk tabel yang dibuang
 --
 
 --
--- AUTO_INCREMENT for table `booking_detail`
+-- AUTO_INCREMENT untuk tabel `booking_detail`
 --
 ALTER TABLE `booking_detail`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=18;
+
 --
--- AUTO_INCREMENT for table `buku`
+-- AUTO_INCREMENT untuk tabel `buku`
 --
 ALTER TABLE `buku`
   MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=22;
+
 --
--- AUTO_INCREMENT for table `kategori`
+-- AUTO_INCREMENT untuk tabel `kategori`
 --
 ALTER TABLE `kategori`
   MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=10;
+
 --
--- AUTO_INCREMENT for table `menu`
+-- AUTO_INCREMENT untuk tabel `menu`
 --
 ALTER TABLE `menu`
   MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=8;
+
 --
--- AUTO_INCREMENT for table `role`
+-- AUTO_INCREMENT untuk tabel `role`
 --
 ALTER TABLE `role`
   MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
+
 --
--- AUTO_INCREMENT for table `temp`
+-- AUTO_INCREMENT untuk tabel `temp`
 --
 ALTER TABLE `temp`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
+
 --
--- AUTO_INCREMENT for table `user`
+-- AUTO_INCREMENT untuk tabel `user`
 --
 ALTER TABLE `user`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=21;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=22;
+COMMIT;
+
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
 /*!40101 SET CHARACTER_SET_RESULTS=@OLD_CHARACTER_SET_RESULTS */;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
