@@ -98,4 +98,49 @@ class Laporan extends CI_Controller
         $this->load->view('pinjam/export-excel-pinjam', $data);
     }
 
+    public function laporan_anggota()
+    {
+        $data['judul'] = 'Laporan Data Anggota';
+        $data['user'] = $this->ModelUser->cekData(['email' => $this->session->userdata('email')])->row_array();
+        $data['anggota'] = $this->db->query("select * from pinjam p,detail_pinjam d, buku b,user u where d.id_buku=b.id and p.id_user=u.id and p.no_pinjam=d.no_pinjam")->result_array();
+        $this->load->view('templates/header', $data);
+        $this->load->view('templates/sidebar');
+        $this->load->view('templates/topbar', $data);
+        $this->load->view('user/laporan-anggota', $data);
+        $this->load->view('templates/footer');
+    }
+
+    public function cetak_laporan_anggota()
+    {
+        $data['anggota'] = $this->db->query("select * from pinjam p,detail_pinjam d, buku b,user u where d.id_buku=b.id and p.id_user=u.id and p.no_pinjam=d.no_pinjam")->result_array();
+        $this->load->view('user/laporan-print-anggota', $data);
+    }
+
+    public function laporan_anggota_pdf()
+    {
+        $data['anggota'] = $this->db->query("select * from pinjam p,detail_pinjam d, buku b,user u where d.id_buku=b.id and p.id_user=u.id and p.no_pinjam=d.no_pinjam")->result_array();
+        // $this->load->library('dompdf_gen');
+        $sroot = $_SERVER['DOCUMENT_ROOT'];
+        include $sroot . "/pustaka-booking/application/third_party/dompdf/autoload.inc.php";
+        $dompdf = new Dompdf\Dompdf();
+        $this->load->view('user/laporan-pdf-anggota', $data);
+        $paper_size = 'A4'; // ukuran kertas
+        $orientation = 'landscape'; //tipe format kertas potrait atau landscape
+        $html = $this->output->get_output();
+        $dompdf->set_paper($paper_size, $orientation);
+        //Convert to PDF
+        $dompdf->load_html($html);
+        $dompdf->render();
+        $dompdf->stream("laporan data anggota.pdf", array('Attachment' => 0));
+        // nama file pdf yang di hasilkan
+    }
+
+    public function export_excel_anggota()
+    {
+        $data = array(
+            'title' => 'Laporan Data Anggota',
+            'anggota' => $this->db->query("select * from pinjam p,detail_pinjam d, buku b,user u where d.id_buku=b.id and p.id_user=u.id and p.no_pinjam=d.no_pinjam")->result_array()
+        );
+        $this->load->view('user/export-excel-anggota', $data);
+    }
 }
