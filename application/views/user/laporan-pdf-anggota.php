@@ -53,7 +53,7 @@
                     <td><?= date('d F Y', strtotime($a['tanggal_input'])); ?></td>
                     <td>
                         <img src="<?= base_url('assets/img/profile/') . $a['image']; ?>" class="img-fluid img-thumbnail"
-                            alt="Image" style="width:60px;height:80px;">
+                            alt="Image" style="width:10px;height:50px;">
                     </td>
                 </tr>
             <?php } ?>

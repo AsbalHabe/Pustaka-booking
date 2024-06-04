@@ -102,7 +102,8 @@ class Laporan extends CI_Controller
     {
         $data['judul'] = 'Laporan Data Anggota';
         $data['user'] = $this->ModelUser->cekData(['email' => $this->session->userdata('email')])->row_array();
-        $data['anggota'] = $this->db->query("select * from pinjam p,detail_pinjam d, buku b,user u where d.id_buku=b.id and p.id_user=u.id and p.no_pinjam=d.no_pinjam")->result_array();
+        $this->db->where('role_id', 1);
+        $data['anggota'] = $this->db->get('user')->result_array();
         $this->load->view('templates/header', $data);
         $this->load->view('templates/sidebar');
         $this->load->view('templates/topbar', $data);
@@ -112,13 +113,13 @@ class Laporan extends CI_Controller
 
     public function cetak_laporan_anggota()
     {
-        $data['anggota'] = $this->db->query("select * from pinjam p,detail_pinjam d, buku b,user u where d.id_buku=b.id and p.id_user=u.id and p.no_pinjam=d.no_pinjam")->result_array();
+        $data['anggota'] = $this->db->get('user')->result_array();
         $this->load->view('user/laporan-print-anggota', $data);
     }
 
     public function laporan_anggota_pdf()
     {
-        $data['anggota'] = $this->db->query("select * from pinjam p,detail_pinjam d, buku b,user u where d.id_buku=b.id and p.id_user=u.id and p.no_pinjam=d.no_pinjam")->result_array();
+        $data['anggota'] = $this->db->get('user')->result_array();
         // $this->load->library('dompdf_gen');
         $sroot = $_SERVER['DOCUMENT_ROOT'];
         include $sroot . "/pustaka-booking/application/third_party/dompdf/autoload.inc.php";
@@ -139,7 +140,7 @@ class Laporan extends CI_Controller
     {
         $data = array(
             'title' => 'Laporan Data Anggota',
-            'anggota' => $this->db->query("select * from pinjam p,detail_pinjam d, buku b,user u where d.id_buku=b.id and p.id_user=u.id and p.no_pinjam=d.no_pinjam")->result_array()
+            'anggota' => $this->db->get('user')->result_array()
         );
         $this->load->view('user/export-excel-anggota', $data);
     }
